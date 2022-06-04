@@ -1,5 +1,5 @@
 {
-    "name": "UnityCoroutineSubstitute.Editor.Tests",
+    "name": "UnityCoroutineSubstitute.Runtime.Tests",
     "rootNamespace": "CoroutineSubstitute",
     "references": [
         "GUID:694bcb6bd207f4c038be3a8bc25344d3",
