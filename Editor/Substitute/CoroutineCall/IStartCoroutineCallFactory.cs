@@ -4,6 +4,6 @@ namespace CoroutineSubstitute.Call
 {
     public interface IStartCoroutineCallFactory
     {
-        IStartCoroutineCall Create (IEnumerator enumerator);
+        IStartCoroutineCall Create (int id, IEnumerator enumerator);
     }
 }

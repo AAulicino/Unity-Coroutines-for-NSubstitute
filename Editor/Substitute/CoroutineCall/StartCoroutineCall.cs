@@ -7,12 +7,12 @@ namespace CoroutineSubstitute.Call
     {
         readonly IEnumerator enumerator;
 
-        public Guid CallId { get; }
+        public int Id { get; }
         public object Current => enumerator.Current;
 
-        public StartCoroutineCall (IEnumerator enumerator)
+        public StartCoroutineCall (int id, IEnumerator enumerator)
         {
-            CallId = Guid.NewGuid();
+            Id = id;
             this.enumerator = enumerator;
         }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using CoroutineSubstitute.Call;
@@ -9,44 +8,44 @@ namespace CoroutineSubstitute
     public class CoroutineRunnerSubstitute : ICoroutineRunner, ICoroutineRunnerSubstitute
     {
         readonly IStartCoroutineCallFactory callFactory;
+        readonly List<IStartCoroutineCall> startCoroutineCalls;
 
-        readonly Dictionary<Guid, IStartCoroutineCall> calls =
-            new Dictionary<Guid, IStartCoroutineCall>();
+        public IReadOnlyList<IStartCoroutineCall> ReceivedStartCoroutineCalls => startCoroutineCalls;
 
         public CoroutineRunnerSubstitute (IStartCoroutineCallFactory callFactory)
         {
             this.callFactory = callFactory;
+            startCoroutineCalls = new List<IStartCoroutineCall>();
         }
 
         public Coroutine StartCoroutine (IEnumerator enumerator)
         {
-            IStartCoroutineCall call = callFactory.Create(enumerator);
-            calls.Add(call.CallId, call);
-            return null;  // TODO find a way to workaround unity Coroutine class
+            IStartCoroutineCall call = callFactory.Create(startCoroutineCalls.Count, enumerator);
+            startCoroutineCalls.Add(call);
+            return null;
         }
 
         public void StopAllCoroutines ()
         {
-            foreach (IStartCoroutineCall call in calls.Values)
+            foreach (IStartCoroutineCall call in startCoroutineCalls)
                 call.StopCalled();
         }
 
         public void StopCoroutine (Coroutine routine)
         {
-            // TODO find a way to workaround unity Coroutine class
         }
 
         public bool MoveNext ()
         {
             bool anySucceeded = false;
-            foreach (IStartCoroutineCall call in calls.Values)
+            foreach (IStartCoroutineCall call in startCoroutineCalls)
                 anySucceeded |= call.MoveNext();
             return anySucceeded;
         }
 
         public void Reset ()
         {
-            foreach (IStartCoroutineCall call in calls.Values)
+            foreach (IStartCoroutineCall call in startCoroutineCalls)
                 call.Reset();
         }
     }
