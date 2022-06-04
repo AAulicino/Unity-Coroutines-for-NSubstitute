@@ -1,3 +1,14 @@
 {
-	"name": "UnityCoroutineSubstitute.Runtime"
+    "name": "UnityCoroutineSubstitute.Runtime",
+    "rootNamespace": "CoroutineSubstitute",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
