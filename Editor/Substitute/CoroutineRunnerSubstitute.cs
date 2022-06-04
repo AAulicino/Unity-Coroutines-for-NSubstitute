@@ -1,20 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using CoroutineSubstitute.Call;
 using UnityEngine;
 
 namespace CoroutineSubstitute
 {
-    public class CoroutineRunnerSubstitute : ICoroutineRunner, IEnumerator
+    public class CoroutineRunnerSubstitute : ICoroutineRunner, ICoroutineRunnerSubstitute
     {
         readonly IStartCoroutineCallFactory callFactory;
 
         readonly Dictionary<Guid, IStartCoroutineCall> calls =
             new Dictionary<Guid, IStartCoroutineCall>();
-
-        public object Current => calls.Single().Value;
 
         public CoroutineRunnerSubstitute (IStartCoroutineCallFactory callFactory)
         {

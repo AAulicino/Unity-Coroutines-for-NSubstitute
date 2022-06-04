@@ -36,12 +36,6 @@ namespace CoroutineSubstitute
             }
         }
 
-        public object Current (ICoroutineRunner runner)
-        {
-            ValidateRunner(runner);
-            return ActiveSubstitute.Current;
-        }
-
         public bool MoveNext (ICoroutineRunner runner)
         {
             ValidateRunner(runner);
