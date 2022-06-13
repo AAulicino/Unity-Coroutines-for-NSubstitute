@@ -1,3 +1,4 @@
+using CoroutineSubstitute.Substitutes;
 using NSubstitute;
 
 namespace CoroutineSubstitute

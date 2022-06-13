@@ -1,9 +1,9 @@
 using System.Collections;
-using CoroutineSubstitute.Call;
+using CoroutineSubstitute.Substitutes.Call;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace CoroutineSubstitute
+namespace CoroutineSubstitute.Tests.Substitutes.Call
 {
     public class StartCoroutineCallTests
     {

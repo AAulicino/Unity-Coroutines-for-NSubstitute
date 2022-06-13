@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace CoroutineSubstitute.Call
+namespace CoroutineSubstitute.Substitutes.Call
 {
     public class StartCoroutineCallFactory : IStartCoroutineCallFactory
     {

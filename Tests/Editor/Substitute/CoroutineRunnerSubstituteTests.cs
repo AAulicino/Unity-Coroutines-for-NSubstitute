@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
-using CoroutineSubstitute.Call;
+using CoroutineSubstitute.Substitutes;
+using CoroutineSubstitute.Substitutes.Call;
 using CoroutineSubstitute.Utils;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CoroutineSubstitute
+namespace CoroutineSubstitute.Tests
 {
     public class CoroutineRunnerSubstituteTests
     {

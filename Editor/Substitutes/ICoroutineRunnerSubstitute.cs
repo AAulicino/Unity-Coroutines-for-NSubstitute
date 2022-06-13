@@ -1,4 +1,4 @@
-namespace CoroutineSubstitute
+namespace CoroutineSubstitute.Substitutes
 {
     public interface ICoroutineRunnerSubstitute : ICoroutineRunner
     {

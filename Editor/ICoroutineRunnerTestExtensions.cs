@@ -1,4 +1,5 @@
 using System;
+using CoroutineSubstitute.Substitutes;
 
 namespace CoroutineSubstitute
 {

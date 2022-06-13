@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using CoroutineSubstitute.Call;
+using CoroutineSubstitute.Substitutes.Call;
 using CoroutineSubstitute.Utils;
 using UnityEngine;
 
-namespace CoroutineSubstitute
+namespace CoroutineSubstitute.Substitutes
 {
     public class CoroutineRunnerSubstitute : ICoroutineRunner, ICoroutineRunnerSubstitute
     {

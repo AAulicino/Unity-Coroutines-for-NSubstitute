@@ -2,7 +2,7 @@ using System;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace CoroutineSubstitute
+namespace CoroutineSubstitute.Tests
 {
     public class ICoroutineRunnerTestExtensionsTests
     {
