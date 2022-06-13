@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
-using System.Globalization;
-using System.Reflection;
+using CoroutineSubstitute.Samples;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CoroutineSubstitute.Examples
+namespace CoroutineSubstitute.Samples
 {
     public class SubstitutionTests
     {
@@ -24,7 +22,7 @@ namespace CoroutineSubstitute.Examples
             }
         }
 
-        class StartCounterTests : BaseSubstitutionTests
+        class StartCounter : BaseSubstitutionTests
         {
             [Test]
             public void Calls_StartCoroutine ()
@@ -68,6 +66,29 @@ namespace CoroutineSubstitute.Examples
                 Runner.MoveNext();
 
                 Assert.AreEqual(2, Counter.Current);
+            }
+        }
+
+        class StopCounter : BaseSubstitutionTests
+        {
+            [Test]
+            public void Calls_StopCoroutine ()
+            {
+                Counter.StartCounter();
+                Counter.StopCounter();
+                Runner.ReceivedWithAnyArgs().StopCoroutine(Arg.Any<Coroutine>());
+            }
+
+            [Test]
+            public void Stops_Incrementing ()
+            {
+                Counter.StartCounter();
+                Counter.StopCounter();
+
+                Runner.MoveNext();
+                Runner.MoveNext();
+
+                Assert.AreEqual(0, Counter.Current);
             }
         }
     }

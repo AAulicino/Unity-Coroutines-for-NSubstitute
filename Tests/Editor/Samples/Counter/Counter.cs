@@ -1,12 +1,14 @@
 using System.Collections;
+using UnityEngine;
 
-namespace CoroutineSubstitute.Examples
+namespace CoroutineSubstitute.Samples
 {
     public class Counter
     {
         public int Current { get; private set; }
 
         readonly ICoroutineRunner runner;
+        Coroutine coroutine;
 
         public Counter (ICoroutineRunner runner)
         {
@@ -15,7 +17,13 @@ namespace CoroutineSubstitute.Examples
 
         public void StartCounter ()
         {
-            runner.StartCoroutine(CounterRoutine());
+            coroutine = runner.StartCoroutine(CounterRoutine());
+        }
+
+        public void StopCounter ()
+        {
+            runner.StopCoroutine(coroutine);
+            coroutine = null;
         }
 
         IEnumerator CounterRoutine ()
