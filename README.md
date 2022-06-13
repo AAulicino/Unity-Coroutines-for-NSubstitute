@@ -7,9 +7,25 @@ Testing and mocking Unity Coroutines can be tricky. This is an extension for
 [NSubstitute](https://nsubstitute.github.io/) that is designed to help you at mocking Unity
 Coroutines.
 
+## Installation
+
+Unity does not allow specifying a git URL as a dependency of a custom UPM Package.
+There are plans to port this to OpenUPM, in the meantime a manual installation is required.
+
+If you don't have NSubstitute already from another source, add this to your **manifest.json**:
+
+```json
+"com.aaulicino.nsubstitute": "https://github.com/AAulicino/Unity3D-NSubstitute.git"
+```
+
+To install this package, place this in your **manifest.json**:
+```json
+"com.aaulicino.unity-coroutines-for-nsubstitute": "https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute.git"
+```
+
 ## Basic use
 
-Lets use this simple counter class using coroutines for testing:
+Let's use this simple counter class using coroutines for testing:
 
 ```csharp
     public class Counter
@@ -24,12 +40,12 @@ Lets use this simple counter class using coroutines for testing:
             this.runner = runner;
         }
 
-        public void StartCounter ()
+        public void Start ()
         {
             coroutine = runner.StartCoroutine(CounterRoutine());
         }
 
-        public void StopCounter ()
+        public void Stop ()
         {
             runner.StopCoroutine(coroutine);
             coroutine = null;
@@ -82,7 +98,8 @@ The Counter can now be tested as follows:
 
 Calling Runner.MoveNext() will simulate Unity's coroutine update loop.
 
-You can check the [CounterTests.cs](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/blob/main/Tests/Editor/Samples/Counter/CounterTests.cs) for test examples on the [Counter](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/blob/main/Tests/Editor/Samples/Counter/Counter.cs) class.
+You can check the [CounterTests.cs](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/blob/main/Tests/Editor/Samples/Counter/CounterTests.cs)
+for test examples on the [Counter](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/blob/main/Tests/Editor/Samples/Counter/Counter.cs) class.
 
 Since MonoBehaviours implement all methods specified in the ICoroutineRunner interface, you can
 simply add it to your MonoBehaviour, for example:
