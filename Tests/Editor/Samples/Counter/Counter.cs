@@ -15,12 +15,12 @@ namespace CoroutineSubstitute.Samples
             this.runner = runner;
         }
 
-        public void StartCounter ()
+        public void Start ()
         {
             coroutine = runner.StartCoroutine(CounterRoutine());
         }
 
-        public void StopCounter ()
+        public void Stop ()
         {
             runner.StopCoroutine(coroutine);
             coroutine = null;
