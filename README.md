@@ -75,7 +75,7 @@ calling:
 ICoroutineRunner runner = CoroutineSubstitute.Create();
 ```
 
-To preserve the Syntax provided by NSubstitute, this alternate version can be done instead
+To preserve the Syntax provided by NSubstitute, this alternate version can be used instead:
 
 ```
 ICoroutineRunner runner = Substitute.ForPartsOf<CoroutineRunnerSubstitute>();
