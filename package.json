@@ -1,0 +1,26 @@
+{
+    "name": "com.aaulicino.unity-coroutines-for-nsubstitute",
+    "displayName": "Unity Coroutines for NSubstitute",
+    "version": "0.1.0",
+    "unity": "2020.3",
+    "description": "Mocking Unity3D Coroutines in Unity3D using NSubstitute",
+    "keywords": [
+        "NSubstitute",
+        "mock",
+        "coroutine",
+        "test",
+        "testing-tools"
+    ],
+    "homepage": "https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute",
+    "documentationUrl": "https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/blob/main/README.md",
+    "changelogUrl": "https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/blob/main/CHANGELOG.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute"
+    },
+    "author": {
+        "name": "Arthur Aulicino",
+        "url": "https://github.com/AAulicino"
+    },
+    "license": "MIT"
+}
