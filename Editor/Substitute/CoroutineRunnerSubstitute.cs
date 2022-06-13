@@ -2,14 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CoroutineSubstitute.Call;
+using CoroutineSubstitute.Utils;
 using UnityEngine;
 
 namespace CoroutineSubstitute
 {
     public class CoroutineRunnerSubstitute : ICoroutineRunner, ICoroutineRunnerSubstitute
     {
+        static readonly IStartCoroutineCallFactory defaultCallFactory = new StartCoroutineCallFactory();
+
         readonly IStartCoroutineCallFactory callFactory;
         readonly Dictionary<int, IStartCoroutineCall> activeCoroutines;
+
+        public CoroutineRunnerSubstitute () : this(defaultCallFactory)
+        {
+        }
 
         public CoroutineRunnerSubstitute (IStartCoroutineCallFactory callFactory)
         {
@@ -19,6 +26,9 @@ namespace CoroutineSubstitute
 
         public virtual Coroutine StartCoroutine (IEnumerator enumerator)
         {
+            if (enumerator is null)
+                throw new ArgumentNullException(nameof(enumerator));
+
             IStartCoroutineCall call = callFactory.Create(activeCoroutines.Count, enumerator);
             activeCoroutines.Add(call.Id, call);
             return CoroutineFactory.Create(call.Id);

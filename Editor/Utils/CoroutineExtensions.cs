@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using UnityEngine;
 
-namespace CoroutineSubstitute
+namespace CoroutineSubstitute.Utils
 {
     internal static class CoroutineExtensions
     {

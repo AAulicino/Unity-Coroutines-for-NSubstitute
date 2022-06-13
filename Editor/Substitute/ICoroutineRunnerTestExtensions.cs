@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using CoroutineSubstitute.Call;
 
 namespace CoroutineSubstitute
 {
@@ -14,7 +12,7 @@ namespace CoroutineSubstitute
             if (runner is CoroutineRunnerSubstitute substitute)
                 return substitute;
 
-            throw new InvalidOperationException(
+            throw new ArgumentException(
                 "ICoroutineRunner must be created using CoroutineSubstitute.Create()"
             );
         }
