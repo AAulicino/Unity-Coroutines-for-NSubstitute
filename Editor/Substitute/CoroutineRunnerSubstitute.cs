@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CoroutineSubstitute.Call;
@@ -8,44 +9,45 @@ namespace CoroutineSubstitute
     public class CoroutineRunnerSubstitute : ICoroutineRunner, ICoroutineRunnerSubstitute
     {
         readonly IStartCoroutineCallFactory callFactory;
-        readonly List<IStartCoroutineCall> startCoroutineCalls;
-
-        public IReadOnlyList<IStartCoroutineCall> ReceivedStartCoroutineCalls => startCoroutineCalls;
+        readonly Dictionary<int, IStartCoroutineCall> activeCoroutines;
 
         public CoroutineRunnerSubstitute (IStartCoroutineCallFactory callFactory)
         {
             this.callFactory = callFactory;
-            startCoroutineCalls = new List<IStartCoroutineCall>();
+            activeCoroutines = new Dictionary<int, IStartCoroutineCall>();
         }
 
-        public Coroutine StartCoroutine (IEnumerator enumerator)
+        public virtual Coroutine StartCoroutine (IEnumerator enumerator)
         {
-            IStartCoroutineCall call = callFactory.Create(startCoroutineCalls.Count, enumerator);
-            startCoroutineCalls.Add(call);
-            return null;
+            IStartCoroutineCall call = callFactory.Create(activeCoroutines.Count, enumerator);
+            activeCoroutines.Add(call.Id, call);
+            return CoroutineFactory.Create(call.Id);
         }
 
-        public void StopAllCoroutines ()
+        public virtual void StopAllCoroutines ()
         {
-            foreach (IStartCoroutineCall call in startCoroutineCalls)
-                call.StopCalled();
+            activeCoroutines.Clear();
         }
 
-        public void StopCoroutine (Coroutine routine)
+        public virtual void StopCoroutine (Coroutine routine)
         {
+            if (routine == null)
+                throw new ArgumentNullException(nameof(routine));
+
+            activeCoroutines.Remove(routine.GetId());
         }
 
-        public bool MoveNext ()
+        public virtual bool MoveNext ()
         {
             bool anySucceeded = false;
-            foreach (IStartCoroutineCall call in startCoroutineCalls)
+            foreach (IStartCoroutineCall call in activeCoroutines.Values)
                 anySucceeded |= call.MoveNext();
             return anySucceeded;
         }
 
-        public void Reset ()
+        public virtual void Reset ()
         {
-            foreach (IStartCoroutineCall call in startCoroutineCalls)
+            foreach (IStartCoroutineCall call in activeCoroutines.Values)
                 call.Reset();
         }
     }

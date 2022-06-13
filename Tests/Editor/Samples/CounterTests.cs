@@ -1,4 +1,10 @@
+using System;
+using System.Collections;
+using System.Globalization;
+using System.Reflection;
+using NSubstitute;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace CoroutineSubstitute.Examples
 {
@@ -20,6 +26,13 @@ namespace CoroutineSubstitute.Examples
 
         class StartCounterTests : BaseSubstitutionTests
         {
+            [Test]
+            public void Calls_StartCoroutine ()
+            {
+                Counter.StartCounter();
+                Runner.Received().StartCoroutine(Arg.Any<IEnumerator>());
+            }
+
             [Test]
             public void Starts_At_Zero ()
             {

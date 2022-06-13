@@ -18,10 +18,5 @@ namespace CoroutineSubstitute.Call
 
         public bool MoveNext () => enumerator.MoveNext();
         public void Reset () => enumerator.Reset();
-
-        public void StopCalled ()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

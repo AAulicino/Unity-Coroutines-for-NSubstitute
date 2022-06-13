@@ -1,4 +1,5 @@
 using CoroutineSubstitute.Call;
+using NSubstitute;
 
 namespace CoroutineSubstitute
 {
@@ -6,6 +7,7 @@ namespace CoroutineSubstitute
     {
         static readonly IStartCoroutineCallFactory callFactory = new StartCoroutineCallFactory();
 
-        public static ICoroutineRunner Create () => new CoroutineRunnerSubstitute(callFactory);
+        public static ICoroutineRunner Create ()
+            => Substitute.ForPartsOf<CoroutineRunnerSubstitute>(callFactory);
     }
 }

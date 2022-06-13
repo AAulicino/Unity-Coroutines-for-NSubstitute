@@ -6,7 +6,7 @@ namespace CoroutineSubstitute.Examples
     {
         public int Current { get; private set; }
 
-        ICoroutineRunner runner;
+        readonly ICoroutineRunner runner;
 
         public Counter (ICoroutineRunner runner)
         {

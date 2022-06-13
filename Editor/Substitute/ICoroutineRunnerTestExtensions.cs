@@ -6,11 +6,6 @@ namespace CoroutineSubstitute
 {
     public static class ICoroutineRunnerTestExtensions
     {
-        public static IReadOnlyList<IStartCoroutineCall> GetReceivedStartCoroutineCalls (
-            this ICoroutineRunner runner
-        )
-            => CastToSubstitute(runner).ReceivedStartCoroutineCalls;
-
         public static bool MoveNext (this ICoroutineRunner runner)
             => CastToSubstitute(runner).MoveNext();
 
