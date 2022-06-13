@@ -63,8 +63,9 @@ namespace CoroutineSubstitute.Samples
 
                 Runner.MoveNext();
                 Runner.MoveNext();
+                Runner.MoveNext();
 
-                Assert.AreEqual(2, Counter.Current);
+                Assert.AreEqual(3, Counter.Current);
             }
         }
 
