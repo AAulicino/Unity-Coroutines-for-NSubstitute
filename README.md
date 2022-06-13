@@ -1,4 +1,4 @@
-Unity Coroutines for [NSubstitute](https://nsubstitute.github.io/)
+Unity Coroutines for NSubstitute
 ========
 
 ## What is it?
