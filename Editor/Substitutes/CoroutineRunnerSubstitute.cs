@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using CoroutineSubstitute.Substitutes.Call;
 using CoroutineSubstitute.Utils;
 using UnityEngine;
@@ -29,7 +31,14 @@ namespace CoroutineSubstitute.Substitutes
             if (enumerator is null)
                 throw new ArgumentNullException(nameof(enumerator));
 
-            IStartCoroutineCall call = callFactory.Create(activeCoroutines.Count, enumerator);
+            StackTrace trace = new StackTrace();
+            MethodBase callingMethod = trace.GetFrame(1).GetMethod();
+
+            IStartCoroutineCall call = callFactory.Create(
+                activeCoroutines.Count,
+                callingMethod.Name,
+                enumerator
+            );
             activeCoroutines.Add(call.Id, call);
             return CoroutineFactory.Create(call.Id);
         }
@@ -47,7 +56,7 @@ namespace CoroutineSubstitute.Substitutes
             activeCoroutines.Remove(routine.GetId());
         }
 
-        public virtual bool MoveNext ()
+        public bool MoveNext ()
         {
             bool anySucceeded = false;
             foreach (IStartCoroutineCall call in activeCoroutines.Values)
@@ -55,10 +64,42 @@ namespace CoroutineSubstitute.Substitutes
             return anySucceeded;
         }
 
-        public virtual void Reset ()
+        public void Reset ()
         {
             foreach (IStartCoroutineCall call in activeCoroutines.Values)
                 call.Reset();
+        }
+
+        public IStartCoroutineCall FindCall (int callId)
+        {
+            if (!activeCoroutines.TryGetValue(callId, out IStartCoroutineCall call))
+                throw new ArgumentException($"No call with index {callId}");
+            return call;
+        }
+
+        public IStartCoroutineCall FindCall (Coroutine routine)
+        {
+            if (routine == null)
+                throw new ArgumentNullException(nameof(routine));
+            return FindCall(routine.GetId());
+        }
+
+        public IStartCoroutineCall FindCall (string callerMethod)
+        {
+            if (string.IsNullOrWhiteSpace(callerMethod))
+            {
+                throw new ArgumentException(
+                    $"'{nameof(callerMethod)}' cannot be null or whitespace.", nameof(callerMethod)
+                );
+            }
+
+            foreach (IStartCoroutineCall activeCall in activeCoroutines.Values)
+            {
+                if (activeCall.CallingMethodName == callerMethod)
+                    return activeCall;
+            }
+
+            throw new ArgumentException($"No call from method '{callerMethod}'");
         }
     }
 }
