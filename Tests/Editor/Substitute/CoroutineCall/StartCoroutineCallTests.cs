@@ -12,12 +12,14 @@ namespace CoroutineSubstitute.Tests.Substitutes.Call
             public const int ID = 1;
             public StartCoroutineCall Call { get; private set; }
             public IEnumerator Enumerator { get; private set; }
+            public IStartCoroutineCallFactory CallFactory { get; private set; }
 
             [SetUp]
             public void Setup ()
             {
                 Enumerator = Substitute.For<IEnumerator>();
-                Call = new StartCoroutineCall(ID, Enumerator);
+                CallFactory = Substitute.For<IStartCoroutineCallFactory>();
+                Call = new StartCoroutineCall(ID, Enumerator, CallFactory);
             }
         }
 

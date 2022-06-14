@@ -29,7 +29,7 @@ namespace CoroutineSubstitute.Tests
             [Test]
             public void Calls_CallFactory_Create ()
             {
-                CallFactory.Create(default, default).ReturnsForAnyArgs(
+                CallFactory.Create(default).ReturnsForAnyArgs(
                     Substitute.For<IStartCoroutineCall>()
                 );
 
@@ -37,47 +37,26 @@ namespace CoroutineSubstitute.Tests
 
                 CoroutineRunner.StartCoroutine(enumerator);
 
-                CallFactory.Received().Create(0, enumerator);
-            }
-
-            [Test]
-            public void Increments_Coroutine_Id ()
-            {
-                CallFactory.Create(default, default).ReturnsForAnyArgs(
-                    x =>
-                    {
-                        IStartCoroutineCall sub = Substitute.For<IStartCoroutineCall>();
-                        sub.Id.Returns(x.Arg<int>());
-                        return sub;
-                    }
-                );
-
-                IEnumerator enumerator = Substitute.For<IEnumerator>();
-
-                CoroutineRunner.StartCoroutine(enumerator);
-                CoroutineRunner.StartCoroutine(enumerator);
-
-                CallFactory.Received().Create(1, enumerator);
+                CallFactory.Received().Create(enumerator);
             }
 
             [Test]
             public void Returns_Coroutine_With_Id ()
             {
-                CallFactory.Create(default, default).ReturnsForAnyArgs(
+                const int EXPECTED = 1;
+                CallFactory.Create(default).ReturnsForAnyArgs(
                     x =>
                     {
                         IStartCoroutineCall sub = Substitute.For<IStartCoroutineCall>();
-                        sub.Id.Returns(x.Arg<int>());
+                        sub.Id.Returns(EXPECTED);
                         return sub;
                     }
                 );
-
                 IEnumerator enumerator = Substitute.For<IEnumerator>();
 
-                CoroutineRunner.StartCoroutine(enumerator);
                 Coroutine coroutine = CoroutineRunner.StartCoroutine(enumerator);
 
-                Assert.AreEqual(1, coroutine.GetId());
+                Assert.AreEqual(EXPECTED, coroutine.GetId());
             }
 
             [Test]
@@ -93,7 +72,7 @@ namespace CoroutineSubstitute.Tests
             public void Dont_Call_MoveNext_For_Stopped_Calls ()
             {
                 IStartCoroutineCall call0 = Substitute.For<IStartCoroutineCall>();
-                CallFactory.Create(default, default).ReturnsForAnyArgs(call0);
+                CallFactory.Create(default).ReturnsForAnyArgs(call0);
                 Coroutine coroutine = CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
 
                 CoroutineRunner.StopCoroutine(coroutine);
@@ -116,7 +95,7 @@ namespace CoroutineSubstitute.Tests
                 IStartCoroutineCall call0 = Substitute.For<IStartCoroutineCall>();
                 IStartCoroutineCall call1 = Substitute.For<IStartCoroutineCall>();
                 call1.Id.Returns(1);
-                CallFactory.Create(default, default).ReturnsForAnyArgs(call0, call1);
+                CallFactory.Create(default).ReturnsForAnyArgs(call0, call1);
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
 
@@ -139,7 +118,7 @@ namespace CoroutineSubstitute.Tests
             public void Calls_MoveNext_On_StartCoroutineCall ()
             {
                 IStartCoroutineCall call = Substitute.For<IStartCoroutineCall>();
-                CallFactory.Create(default, default).ReturnsForAnyArgs(call);
+                CallFactory.Create(default).ReturnsForAnyArgs(call);
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
 
                 CoroutineRunner.MoveNext();
@@ -153,7 +132,7 @@ namespace CoroutineSubstitute.Tests
                 IStartCoroutineCall call0 = Substitute.For<IStartCoroutineCall>();
                 IStartCoroutineCall call1 = Substitute.For<IStartCoroutineCall>();
                 call1.Id.Returns(1);
-                CallFactory.Create(default, default).ReturnsForAnyArgs(call0, call1);
+                CallFactory.Create(default).ReturnsForAnyArgs(call0, call1);
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
 
@@ -171,7 +150,7 @@ namespace CoroutineSubstitute.Tests
                 call1.Id.Returns(1);
                 call0.MoveNext().Returns(true);
                 call1.MoveNext().Returns(true);
-                CallFactory.Create(default, default).ReturnsForAnyArgs(call0, call1);
+                CallFactory.Create(default).ReturnsForAnyArgs(call0, call1);
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
 
@@ -186,7 +165,7 @@ namespace CoroutineSubstitute.Tests
                 call1.Id.Returns(1);
                 call0.MoveNext().Returns(true);
                 call1.MoveNext().Returns(false);
-                CallFactory.Create(default, default).ReturnsForAnyArgs(call0, call1);
+                CallFactory.Create(default).ReturnsForAnyArgs(call0, call1);
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
 
@@ -201,7 +180,7 @@ namespace CoroutineSubstitute.Tests
                 call1.Id.Returns(1);
                 call0.MoveNext().Returns(false);
                 call1.MoveNext().Returns(false);
-                CallFactory.Create(default, default).ReturnsForAnyArgs(call0, call1);
+                CallFactory.Create(default).ReturnsForAnyArgs(call0, call1);
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
 
@@ -217,7 +196,7 @@ namespace CoroutineSubstitute.Tests
                 IStartCoroutineCall call0 = Substitute.For<IStartCoroutineCall>();
                 IStartCoroutineCall call1 = Substitute.For<IStartCoroutineCall>();
                 call1.Id.Returns(1);
-                CallFactory.Create(default, default).ReturnsForAnyArgs(call0, call1);
+                CallFactory.Create(default).ReturnsForAnyArgs(call0, call1);
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
                 CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
 

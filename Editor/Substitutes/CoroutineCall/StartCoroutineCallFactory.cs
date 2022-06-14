@@ -4,9 +4,11 @@ namespace CoroutineSubstitute.Substitutes.Call
 {
     public class StartCoroutineCallFactory : IStartCoroutineCallFactory
     {
-        public IStartCoroutineCall Create (int id, IEnumerator enumerator)
+        int id;
+
+        public IStartCoroutineCall Create (IEnumerator enumerator)
         {
-            return new StartCoroutineCall(id, enumerator);
+            return new StartCoroutineCall(id++, enumerator, this);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using CoroutineSubstitute.Substitutes.Call;
 using CoroutineSubstitute.Utils;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace CoroutineSubstitute.Substitutes
             if (enumerator is null)
                 throw new ArgumentNullException(nameof(enumerator));
 
-            IStartCoroutineCall call = callFactory.Create(activeCoroutines.Count, enumerator);
+            IStartCoroutineCall call = callFactory.Create(enumerator);
             activeCoroutines.Add(call.Id, call);
             return CoroutineFactory.Create(call.Id);
         }
@@ -50,8 +51,27 @@ namespace CoroutineSubstitute.Substitutes
         public virtual bool MoveNext ()
         {
             bool anySucceeded = false;
-            foreach (IStartCoroutineCall call in activeCoroutines.Values)
-                anySucceeded |= call.MoveNext();
+            HashSet<int> callsToRemove = new HashSet<int>();
+
+            foreach (IStartCoroutineCall call in activeCoroutines.Values.ToArray())
+            {
+                bool result = call.MoveNext();
+
+                if (callsToRemove.Contains(call.Id))
+                    continue;
+
+                if (call.Current is Coroutine coroutine)
+                {
+                    int coroutineId = coroutine.GetId();
+                    call.SetNestedCoroutine(activeCoroutines[coroutineId]);
+                    callsToRemove.Add(coroutineId);
+                }
+                anySucceeded |= result;
+            }
+
+            foreach (int id in callsToRemove)
+                activeCoroutines.Remove(id);
+
             return anySucceeded;
         }
 
