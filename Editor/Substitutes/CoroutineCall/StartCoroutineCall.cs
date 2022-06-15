@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using CoroutineSubstitute.Utils;
 using UnityEngine;
@@ -47,7 +48,16 @@ namespace CoroutineSubstitute.Substitutes.Call
 
         public void SetNestedCoroutine (IStartCoroutineCall call)
         {
-            Debug.Assert(nestedCoroutine.GetId() == call.Id);
+            if (nestedCoroutine == null)
+                throw new InvalidOperationException("Nested coroutine is not set");
+
+            if (nestedCoroutine.GetId() != call.Id)
+            {
+                throw new InvalidOperationException(
+                    $"Received Coroutine={call.Id}, expected Coroutine={nestedCoroutine.GetId()}"
+                );
+            }
+
             nestedCall = call;
             nestedCoroutine = null;
         }
