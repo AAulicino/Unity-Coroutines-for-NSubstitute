@@ -176,6 +176,31 @@ namespace CoroutineSubstitute.Tests.Substitutes.Call
             }
 
             [Test]
+            public void Passes_Call_To_Nested_Calls ()
+            {
+                Coroutine child = CoroutineFactory.Create(ID + 1);
+                Call.MoveNext().Returns(true);
+                Call.Current.Returns(child);
+                Call.MoveNext();
+
+                IStartCoroutineCall childCall = Substitute.For<IStartCoroutineCall>();
+                childCall.Id.Returns(ID + 1);
+                childCall.MoveNext().Returns(true);
+                Coroutine grandChild = CoroutineFactory.Create(ID + 2);
+                childCall.Current.Returns(grandChild);
+                Call.SetNestedCoroutine(childCall);
+                Call.MoveNext();
+
+                IStartCoroutineCall grandChildCall = Substitute.For<IStartCoroutineCall>();
+                grandChildCall.Id.Returns(ID + 2);
+                Call.SetNestedCoroutine(grandChildCall);
+
+                Call.MoveNext();
+
+                childCall.Received().SetNestedCoroutine(grandChildCall);
+            }
+
+            [Test]
             public void Throws_If_Received_Unexpected_Call ()
             {
                 IStartCoroutineCall nested = Substitute.For<IStartCoroutineCall>();

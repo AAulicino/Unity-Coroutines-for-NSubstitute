@@ -21,7 +21,7 @@ namespace CoroutineSubstitute.Samples
             }
         }
 
-        class StartCounter : BaseSubstitutionTests
+        class Start : BaseSubstitutionTests
         {
             [Test]
             public void Calls_StartCoroutine ()
@@ -69,7 +69,7 @@ namespace CoroutineSubstitute.Samples
             }
         }
 
-        class StopCounter : BaseSubstitutionTests
+        class Stop : BaseSubstitutionTests
         {
             [Test]
             public void Calls_StopCoroutine ()

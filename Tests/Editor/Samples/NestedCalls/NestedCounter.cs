@@ -8,28 +8,46 @@ namespace CoroutineSubstitute.Samples
         public int Current { get; private set; }
 
         readonly ICoroutineRunner runner;
-        Coroutine coroutine;
+        Coroutine nestedIEnumerator;
+        Coroutine nestedCoroutine;
 
         public NestedCounter (ICoroutineRunner runner)
         {
             this.runner = runner;
         }
 
-        public void Start ()
+        public void StartNestedIEnumerator ()
         {
-            coroutine = runner.StartCoroutine(CounterRoutine());
+            nestedIEnumerator = runner.StartCoroutine(CounterRoutineIEnumerator());
         }
 
-        public void Stop ()
+        public void StopNestedIEnumerator ()
         {
-            runner.StopCoroutine(coroutine);
-            coroutine = null;
+            runner.StopCoroutine(nestedIEnumerator);
+            nestedIEnumerator = null;
         }
 
-        IEnumerator CounterRoutine ()
+        public void StartNestedCoroutine ()
+        {
+            nestedCoroutine = runner.StartCoroutine(CounterRoutineCoroutine());
+        }
+
+        public void StopNestedCoroutine ()
+        {
+            runner.StopCoroutine(nestedCoroutine);
+            nestedCoroutine = null;
+        }
+
+        IEnumerator CounterRoutineIEnumerator ()
         {
             Current++;
-            yield return CounterRoutine();
+            yield return CounterRoutineIEnumerator();
+        }
+
+        IEnumerator CounterRoutineCoroutine ()
+        {
+            Current++;
+            yield return runner.StartCoroutine(CounterRoutineCoroutine());
         }
     }
 }

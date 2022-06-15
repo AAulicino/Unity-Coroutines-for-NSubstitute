@@ -1,7 +1,6 @@
 using System.Collections;
 using NSubstitute;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace CoroutineSubstitute.Samples
 {
@@ -20,26 +19,26 @@ namespace CoroutineSubstitute.Samples
             }
         }
 
-        class StartCounter : BaseNestedCounterTests
+        class StartNestedIEnumerator : BaseNestedCounterTests
         {
             [Test]
             public void Calls_StartCoroutine ()
             {
-                Counter.Start();
+                Counter.StartNestedIEnumerator();
                 Runner.Received().StartCoroutine(Arg.Any<IEnumerator>());
             }
 
             [Test]
             public void Starts_At_Zero ()
             {
-                Counter.Start();
+                Counter.StartNestedIEnumerator();
                 Assert.AreEqual(0, Counter.Current);
             }
 
             [Test]
             public void MoveNext_Increments_To_One ()
             {
-                Counter.Start();
+                Counter.StartNestedIEnumerator();
                 Runner.MoveNext();
                 Assert.AreEqual(1, Counter.Current);
             }
@@ -47,7 +46,7 @@ namespace CoroutineSubstitute.Samples
             [Test]
             public void Two_MoveNext_Increments_To_Two ()
             {
-                Counter.Start();
+                Counter.StartNestedIEnumerator();
 
                 Runner.MoveNext();
                 Runner.MoveNext();
@@ -58,7 +57,55 @@ namespace CoroutineSubstitute.Samples
             [Test]
             public void Three_MoveNext_Increments_To_Three ()
             {
-                Counter.Start();
+                Counter.StartNestedIEnumerator();
+
+                Runner.MoveNext();
+                Runner.MoveNext();
+                Runner.MoveNext();
+
+                Assert.AreEqual(3, Counter.Current);
+            }
+        }
+
+        class StartNestedCoroutine : BaseNestedCounterTests
+        {
+            [Test]
+            public void Calls_StartCoroutine ()
+            {
+                Counter.StartNestedCoroutine();
+                Runner.Received().StartCoroutine(Arg.Any<IEnumerator>());
+            }
+
+            [Test]
+            public void Starts_At_Zero ()
+            {
+                Counter.StartNestedCoroutine();
+                Assert.AreEqual(0, Counter.Current);
+            }
+
+            [Test]
+            public void MoveNext_Increments_To_One ()
+            {
+                Counter.StartNestedCoroutine();
+                Runner.MoveNext();
+                Assert.AreEqual(1, Counter.Current);
+            }
+
+            [Test]
+            public void Two_MoveNext_Increments_To_Two ()
+            {
+                Counter.StartNestedCoroutine();
+
+                Runner.MoveNext();
+                Runner.MoveNext();
+
+                Assert.AreEqual(2, Counter.Current);
+            }
+
+            [Test]
+            public void Three_MoveNext_Increments_To_Three ()
+            {
+                Counter.StartNestedCoroutine();
 
                 Runner.MoveNext();
                 Runner.MoveNext();

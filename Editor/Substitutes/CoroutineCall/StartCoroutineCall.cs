@@ -48,6 +48,12 @@ namespace CoroutineSubstitute.Substitutes.Call
 
         public void SetNestedCoroutine (IStartCoroutineCall call)
         {
+            if (nestedCall?.Current is Coroutine coroutine && coroutine.GetId() == call.Id)
+            {
+                nestedCall.SetNestedCoroutine(call);
+                return;
+            }
+
             if (nestedCoroutine == null)
                 throw new InvalidOperationException("Nested coroutine is not set");
 
