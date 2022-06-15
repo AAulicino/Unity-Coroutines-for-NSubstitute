@@ -22,7 +22,7 @@ namespace CoroutineSubstitute.IntegrationTests
             [Test]
             public void MoveNext_Increment_Multiple_Counters ()
             {
-                Counter.StartIEnumerator(5);
+                Counter.StartIEnumerators(5);
 
                 Runner.MoveNext();
                 Runner.MoveNext();
@@ -38,7 +38,7 @@ namespace CoroutineSubstitute.IntegrationTests
             [Test]
             public void MoveNext_Increment_Multiple_Counters ()
             {
-                Counter.StartCoroutine(5);
+                Counter.StartCoroutines(5);
 
                 Runner.MoveNext();
                 Runner.MoveNext();
@@ -46,6 +46,38 @@ namespace CoroutineSubstitute.IntegrationTests
 
                 foreach (int counter in Counter.Counters)
                     Assert.AreEqual(3, counter);
+            }
+        }
+
+        class StopIEnumerator : BaseParallelNestedCounterTests
+        {
+            [Test]
+            public void Stop_Stops_All_Counters ()
+            {
+                Counter.StartIEnumerators(5);
+                Runner.MoveNext();
+
+                Counter.StopIEnumerators();
+                Runner.MoveNext();
+
+                foreach (int counter in Counter.Counters)
+                    Assert.AreEqual(1, counter);
+            }
+        }
+
+        class StopCoroutine : BaseParallelNestedCounterTests
+        {
+            [Test]
+            public void Stop_Stops_All_Counters ()
+            {
+                Counter.StartCoroutines(5);
+                Runner.MoveNext();
+
+                Counter.StopCoroutines();
+                Runner.MoveNext();
+
+                foreach (int counter in Counter.Counters)
+                    Assert.AreEqual(1, counter);
             }
         }
     }

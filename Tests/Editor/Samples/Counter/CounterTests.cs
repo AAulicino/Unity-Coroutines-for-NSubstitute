@@ -67,6 +67,18 @@ namespace CoroutineSubstitute.Samples
 
                 Assert.AreEqual(3, Counter.Current);
             }
+
+            [Test]
+            public void Stops_When_Routine_Completed ()
+            {
+                Counter.Start();
+                Runner.MoveNext();
+
+                Counter.KeepRunning = false;
+                Runner.MoveNext();
+
+                Assert.AreEqual(1, Counter.Current);
+            }
         }
 
         class Stop : BaseSubstitutionTests

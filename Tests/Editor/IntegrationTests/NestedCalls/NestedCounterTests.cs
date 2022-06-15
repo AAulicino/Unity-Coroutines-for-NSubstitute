@@ -114,5 +114,35 @@ namespace CoroutineSubstitute.IntegrationTests
                 Assert.AreEqual(3, Counter.Current);
             }
         }
+
+        class StopIEnumerator : BaseNestedCounterTests
+        {
+            [Test]
+            public void Stop_Stops_Counter ()
+            {
+                Counter.StartNestedIEnumerator();
+                Runner.MoveNext();
+
+                Counter.StopNestedIEnumerator();
+                Runner.MoveNext();
+
+                Assert.AreEqual(1, Counter.Current);
+            }
+        }
+
+        class StopCoroutine : BaseNestedCounterTests
+        {
+            [Test]
+            public void Stop_Stops_Counter ()
+            {
+                Counter.StartNestedCoroutine();
+                Runner.MoveNext();
+
+                Counter.StopNestedCoroutine();
+                Runner.MoveNext();
+
+                Assert.AreEqual(1, Counter.Current);
+            }
+        }
     }
 }

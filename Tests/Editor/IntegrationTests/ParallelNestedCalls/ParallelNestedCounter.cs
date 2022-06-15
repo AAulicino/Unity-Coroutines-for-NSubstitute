@@ -15,7 +15,7 @@ namespace CoroutineSubstitute.IntegrationTests
             this.runner = runner;
         }
 
-        public void StartIEnumerator (int parallelCount)
+        public void StartIEnumerators (int parallelCount)
         {
             Counters = new int[parallelCount];
             coroutines = new Coroutine[parallelCount];
@@ -24,13 +24,13 @@ namespace CoroutineSubstitute.IntegrationTests
                 coroutines[i] = runner.StartCoroutine(CounterRoutine(i));
         }
 
-        public void StopIEnumerator ()
+        public void StopIEnumerators ()
         {
             foreach (Coroutine coroutine in coroutines)
                 runner.StopCoroutine(coroutine);
         }
 
-        public void StartCoroutine (int parallelCount)
+        public void StartCoroutines (int parallelCount)
         {
             Counters = new int[parallelCount];
             coroutines = new Coroutine[parallelCount];
@@ -39,7 +39,7 @@ namespace CoroutineSubstitute.IntegrationTests
                 coroutines[i] = runner.StartCoroutine(CounterRoutineCoroutine(i));
         }
 
-        public void StopCoroutine ()
+        public void StopCoroutines ()
         {
             foreach (Coroutine coroutine in coroutines)
                 runner.StopCoroutine(coroutine);
