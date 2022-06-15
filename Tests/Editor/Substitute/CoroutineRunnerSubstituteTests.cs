@@ -186,6 +186,24 @@ namespace CoroutineSubstitute.Tests
 
                 Assert.IsFalse(CoroutineRunner.MoveNext());
             }
+
+            [Test]
+            public void Redirects_Nested_StartCoroutine_Calls_To_Source_IStartCoroutineCall ()
+            {
+                IStartCoroutineCall call0 = Substitute.For<IStartCoroutineCall>();
+                IStartCoroutineCall call1 = Substitute.For<IStartCoroutineCall>();
+                call1.Id.Returns(1);
+                CallFactory.Create(default).ReturnsForAnyArgs(call0);
+                CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
+
+                CallFactory.Create(default).ReturnsForAnyArgs(call1);
+                Coroutine nested = CoroutineRunner.StartCoroutine(Substitute.For<IEnumerator>());
+                call0.Current.Returns(nested);
+
+                CoroutineRunner.MoveNext();
+
+                call0.Received().SetNestedCoroutine(call1);
+            }
         }
 
         class Reset : BaseCoroutineRunnerSubstituteTests
