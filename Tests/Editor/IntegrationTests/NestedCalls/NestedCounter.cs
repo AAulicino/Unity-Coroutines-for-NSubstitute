@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace CoroutineSubstitute.Samples
+namespace CoroutineSubstitute.IntegrationTests
 {
     public class NestedCounter
     {
