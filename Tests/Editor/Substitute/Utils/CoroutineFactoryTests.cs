@@ -2,7 +2,7 @@ using CoroutineSubstitute.Utils;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CoroutineSubstitute.Tests.Utils
+namespace CoroutineSubstitute.UnitTests.Utils
 {
     public class CoroutineFactoryTests
     {

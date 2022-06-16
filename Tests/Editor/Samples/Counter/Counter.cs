@@ -7,6 +7,8 @@ namespace CoroutineSubstitute.Samples
     {
         public int Current { get; private set; }
 
+        public bool KeepRunning { get; set; } = true;
+
         readonly ICoroutineRunner runner;
         Coroutine coroutine;
 
@@ -28,7 +30,7 @@ namespace CoroutineSubstitute.Samples
 
         IEnumerator CounterRoutine ()
         {
-            while (true)
+            while (KeepRunning)
             {
                 Current++;
                 yield return null;
