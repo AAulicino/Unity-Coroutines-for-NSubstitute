@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace CoroutineSubstitute.IntegrationTests
+namespace CoroutineSubstitute.SystemTests
 {
     public class ParallelNestedCounter
     {

@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace CoroutineSubstitute.IntegrationTests
+namespace CoroutineSubstitute.SystemTests
 {
     public class ParallelNestedCounterTests
     {

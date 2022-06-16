@@ -2,7 +2,7 @@ using System.Collections;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace CoroutineSubstitute.IntegrationTests
+namespace CoroutineSubstitute.SystemTests
 {
     public class NestedCounterTests
     {
