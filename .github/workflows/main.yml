@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  PACKAGE_MANIFEST: Packages/${{ github.event.repository.name }}/package.json
+
+jobs:
+  create-unity-project:
+    name: Create Unity Project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - run: |
+          mkdir Assets
+          mkdir Packages
+          echo $(python3 ./scripts/setup_unity_manifest.py $PACKAGE_MANIFEST) >>Packages/manifest.json
+  get-unity-version:
+    name: Get Unity Version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker:unityci/hub:latest
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - run: |
+          PACKAGE_MIN_VERSION=$(cat $PACKAGE_MANIFEST | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}')
+          UNITY_VERSION=$(python3 ./scripts/get_unity_version.py)
+          echo "Unity Version: $UNITY_VERSION"
+          echo UNITY_VERSION=$(unity-hub editors --releases | grep $PACKAGE_MIN_VERSION) >>prepare.env
+    outputs:
+      unity-version: UNITY_VERSION
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs:
+      - create-unity-project
+      - get-unity-version
+    steps:
+      - name: Unity - Test runner
+      - uses: game-ci/unity-test-runner@v2
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: editmode
+          unityVersion: ${{ steps.get-unity-version.outputs.unity-version }}
