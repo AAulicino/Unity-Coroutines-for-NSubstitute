@@ -9,7 +9,6 @@ on:
 env:
   UNITY_MANIFEST: Packages/${{ github.event.repository.name }}/package.json
   PACKAGE_CONTENTS: ${{ github.event.repository.name }}
-  PACKAGE_MANIFEST: $PACKAGE_CONTENTS/package.json
   SCRIPTS_DIR: .github/scripts
 
 jobs:
@@ -23,14 +22,16 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
-      - run: $SCRIPTS_DIR/create_unity_project.py $PACKAGE_MANIFEST
+      - run: $SCRIPTS_DIR/create_unity_project.py $PACKAGE_CONTENTS/package.json
       - uses: actions/upload-artifact@v3
         with:
           name: unity-project
           path: |
             Assets/
             Packages/
+            $PACKAGE_CONTENTS
           retention-days: 1
+
   get-unity-version:
     name: Get Unity Version
     runs-on: ubuntu-latest
@@ -41,9 +42,13 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
+      - run:  echo "deb http://ftp.debian.org/debian sid main" >> /etc/apt/sources.list
+      - run:  apt-get update
+      - run: apt-get -t sid install libc6 libc6-dev libc6-dbg
       - run: MIN_UNITY_VERSION=$($SCRIPTS_DIR/get_min_unity_version.py package.json)
     outputs:
       unity-version: MIN_UNITY_VERSION
+
   edit-mode-tests:
     name: Edit Mode Tests
     runs-on: ubuntu-latest

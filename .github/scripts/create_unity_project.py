@@ -22,5 +22,5 @@ manifest = {
     "testables": [packageManifest["name"]],
 }
 
-with open(os.getenv("UNITY_MANIFEST"), "w") as file:
+with open("Packages/manifest.json", "w") as file:
     json.dump(manifest, file, ensure_ascii=False, indent=4)
