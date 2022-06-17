@@ -39,15 +39,9 @@ jobs:
       image: unityci/hub:latest
     steps:
       - uses: actions/checkout@v3
-      - run: cat package.json
-      - run: cat package.json | grep -oE '"unity":\s*"([^"]*)'
-      - run: cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'
-      - run: PACKAGE_MIN_VERSION=$(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}')
-      - run: echo $PACKAGE_MIN_VERSION
-      - run: echo $(unity-hub editors --releases)
-      - run: echo $(unity-hub editors --releases | grep $PACKAGE_MIN_VERSION)
-      - run: echo UNITY_VERSION=$(unity-hub editors --releases | grep $PACKAGE_MIN_VERSION)
-      - run: echo UNITY_VERSION=$(unity-hub editors --releases | grep $PACKAGE_MIN_VERSION) >>GITHUB_ENV
+      - run: |
+          PACKAGE_MIN_VERSION=$(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}')
+          echo UNITY_VERSION=$(unity-hub editors --releases | grep $PACKAGE_MIN_VERSION) >>GITHUB_ENV
 
   edit-mode-tests:
     name: Edit Mode Tests
