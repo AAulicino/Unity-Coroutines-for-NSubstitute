@@ -1,4 +1,4 @@
-name: CI
+name: Run Unity Tests
 
 on:
   push:
@@ -7,7 +7,9 @@ on:
   workflow_dispatch:
 
 env:
-  PACKAGE_MANIFEST: .github/Packages/${{ github.event.repository.name }}/package.json
+  UNITY_MANIFEST: Packages/${{ github.event.repository.name }}/package.json
+  PACKAGE_MANIFEST: package.json
+  SCRIPTS_DIR: .github/scripts
 
 jobs:
   create-unity-project:
@@ -18,30 +20,34 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
-      - run: mkdir Assets
-      - run: mkdir Packages
-      - run: echo $(python3 .github/scripts/setup_unity_manifest.py $PACKAGE_MANIFEST) >>Packages/manifest.json
+      - run: $SCRIPTS_DIR/create_unity_project.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: unity-project
+          path: |
+            Assets/
+            Packages/
+          retention-days: 1
   get-unity-version:
     name: Get Unity Version
     runs-on: ubuntu-latest
+    container:
+      image: docker:unityci/hub:latest
     steps:
-      - uses: docker:unityci/hub@latest
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
-      - run: |
-          PACKAGE_MIN_VERSION=$(cat $PACKAGE_MANIFEST | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}')
-          UNITY_VERSION=$(python3 ./scripts/get_unity_version.py)
-          echo "Unity Version: $UNITY_VERSION"
-          echo UNITY_VERSION=$(unity-hub editors --releases | grep $PACKAGE_MIN_VERSION) >>prepare.env
+      - run: $SCRIPTS_DIR/get_min_unity_version.sh
     outputs:
-      unity-version: UNITY_VERSION
+      unity-version: MIN_UNITY_VERSION
   edit-mode-tests:
     runs-on: ubuntu-latest
     needs:
       - create-unity-project
       - get-unity-version
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: unity-project
       - uses: actions/cache@v3
         with:
           path: Library/
