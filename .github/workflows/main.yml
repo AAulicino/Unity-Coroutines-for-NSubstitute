@@ -39,8 +39,8 @@ jobs:
       image: unityci/hub:latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo UNITY_VERSION=$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'))
-      - run: echo UNITY_VERSION=$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}')) >>GITHUB_ENV
+      - run: echo "UNITY_VERSION=$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'))"
+      - run: echo "UNITY_VERSION=$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'))" >>GITHUB_ENV
       - run: cat $GITHUB_ENV
 
   edit-mode-tests:
@@ -58,6 +58,7 @@ jobs:
           path: Library/
           key: unity-ci-cache
       - run: mkdir Assets
+      - run: echo ${{ env.UNITY_VERSION }}
       - uses: game-ci/unity-test-runner@v2
         id: tests
         env:
