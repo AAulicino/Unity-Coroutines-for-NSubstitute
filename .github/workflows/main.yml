@@ -42,11 +42,9 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
-      - run: apt-get update
-      - run: apt-get -y install libc6 libc6-dev libc6-dbg
-      - run: MIN_UNITY_VERSION=$($SCRIPTS_DIR/get_min_unity_version.py package.json)
+      - run: $SCRIPTS_DIR/get_package_unity_version.sh
     outputs:
-      unity-version: MIN_UNITY_VERSION
+      unity-version: UNITY_VERSION
 
   edit-mode-tests:
     name: Edit Mode Tests
