@@ -18,11 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: mkdir $PACKAGE_CONTENTS
-      - run: mv -v $(git ls-tree --full-tree --name-only HEAD) $PACKAGE_CONTENTS
+      - run: mv -v $(git ls-tree --full-tree --name-only HEAD | grep -v '^\.') $PACKAGE_CONTENTS
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
-      - run: find . -type d
       - run: $SCRIPTS_DIR/create_unity_project.py $PACKAGE_CONTENTS/package.json
       - uses: actions/upload-artifact@v3
         with:
