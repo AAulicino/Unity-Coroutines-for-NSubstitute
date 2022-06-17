@@ -6,6 +6,9 @@ import json
 
 packageManifestPath = sys.argv[1]
 
+os.mkdir("Assets")
+os.mkdir("Packages")
+
 with open(packageManifestPath) as file:
     packageManifest = json.load(file)
 
@@ -14,9 +17,10 @@ manifest = {
         "com.aaulicino.nsubstitute": "https://github.com/AAulicino/Unity3D-NSubstitute.git",
         f"{packageManifest['name']}": f"file:/{os.path.dirname(packageManifestPath)}",
         "com.unity.test-framework": "1.1.31",
-        "com.unity.testtools.codecoverage": "1.1.1"
+        "com.unity.testtools.codecoverage": "1.1.1",
     },
-    "testables": [packageManifest['name']]
+    "testables": [packageManifest["name"]],
 }
 
-print (json.dumps(manifest, indent=4))
+with open(os.getenv("UNITY_MANIFEST"), "w") as file:
+    json.dump(manifest, file, ensure_ascii=False, indent=4)
