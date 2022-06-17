@@ -37,14 +37,15 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: unityci/hub:latest
+    outputs:
+      unity-version: ${{ steps.unity-version.outputs.unity-version }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
-      - run: $SCRIPTS_DIR/get_package_unity_version.sh package.json
-    outputs:
-      unity-version: $UNITY_VERSION
+      - id: unity-version
+      - run: echo "::set-output name=unity-version::$($SCRIPTS_DIR/get_package_unity_version.sh package.json)"
 
   edit-mode-tests:
     name: Edit Mode Tests
