@@ -8,7 +8,8 @@ on:
 
 env:
   UNITY_MANIFEST: Packages/${{ github.event.repository.name }}/package.json
-  PACKAGE_MANIFEST: package.json
+  PACKAGE_CONTENTS: ${{ github.event.repository.name }}
+  PACKAGE_MANIFEST: $PACKAGE_CONTENTS/package.json
   SCRIPTS_DIR: .github/scripts
 
 jobs:
@@ -17,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: mkdir $PACKAGE_CONTENTS
+      - run: mv -v $(git ls-tree --full-tree --name-only HEAD) $PACKAGE_CONTENTS
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
@@ -40,6 +43,7 @@ jobs:
     outputs:
       unity-version: MIN_UNITY_VERSION
   edit-mode-tests:
+    name: Edit Mode Tests
     runs-on: ubuntu-latest
     needs:
       - create-unity-project
