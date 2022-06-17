@@ -27,8 +27,8 @@ jobs:
         with:
           name: unity-project
           path: |
-            Assets/
-            Packages/
+            Assets
+            Packages
             $PACKAGE_CONTENTS
           retention-days: 1
 
@@ -43,7 +43,7 @@ jobs:
         with:
           python-version: "3.8"
       - run: apt-get update
-      - run: apt-get -t sid install libc6 libc6-dev libc6-dbg
+      - run: apt-get install libc6 libc6-dev libc6-dbg
       - run: MIN_UNITY_VERSION=$($SCRIPTS_DIR/get_min_unity_version.py package.json)
     outputs:
       unity-version: MIN_UNITY_VERSION
