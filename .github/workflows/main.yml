@@ -2,7 +2,7 @@ name: Run Unity Tests
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: ["main", "develop"]
   pull_request:
   workflow_dispatch:
 
@@ -37,11 +37,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: unityci/hub:latest
+    outputs:
+      unity-version: ${{ steps.get-unity-version.outputs.UNITY_VERSION }}
     steps:
       - uses: actions/checkout@v3
-      - run: echo "UNITY_VERSION=$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'))"
-      - run: echo "UNITY_VERSION=$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'))" >>GITHUB_ENV
-      - run: cat $GITHUB_ENV
+      - id: get-unity-version
+        run: echo "::set-output UNITY_VERSION=$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'))"
 
   edit-mode-tests:
     name: Edit Mode Tests
@@ -58,7 +59,6 @@ jobs:
           path: Library/
           key: unity-ci-cache
       - run: mkdir Assets
-      - run: echo ${{ env.UNITY_VERSION }}
       - uses: game-ci/unity-test-runner@v2
         id: tests
         env:
@@ -66,8 +66,8 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
-          unityVersion: ${{ env.UNITY_VERSION }}
-          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport'
+          unityVersion: ${{ needs.get-unity-version.outputs.unity-version }}
+          coverageOptions: "generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport"
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -76,5 +76,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: Coverage results for ${{ matrix.testMode }}
+          name: Coverage results for edit mode
           path: ${{ steps.tests.outputs.coveragePath }}
