@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  PACKAGE_MANIFEST: Packages/${{ github.event.repository.name }}/package.json
+  PACKAGE_MANIFEST: .github/Packages/${{ github.event.repository.name }}/package.json
 
 jobs:
   create-unity-project:
