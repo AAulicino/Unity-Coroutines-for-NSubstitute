@@ -44,7 +44,7 @@ jobs:
           python-version: "3.8"
       - run: $SCRIPTS_DIR/get_package_unity_version.sh package.json
     outputs:
-      unity-version: UNITY_VERSION
+      unity-version: $UNITY_VERSION
 
   edit-mode-tests:
     name: Edit Mode Tests
