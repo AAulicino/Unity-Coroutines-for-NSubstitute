@@ -24,7 +24,7 @@ jobs:
     name: Get Unity Version
     runs-on: ubuntu-latest
     steps:
-      - uses: docker:unityci/hub:latest
+      - uses: docker:unityci/hub@latest
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
       - run: |
