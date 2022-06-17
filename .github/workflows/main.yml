@@ -35,15 +35,33 @@ jobs:
     outputs:
       unity-version: UNITY_VERSION
   test:
-    name: Tests
+    name: tests-editmode
     runs-on: ubuntu-latest
     needs:
       - create-unity-project
       - get-unity-version
     steps:
-      - name: Unity - Test runner
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Library/
+          key: unity-ci-cache
       - uses: game-ci/unity-test-runner@v2
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
           unityVersion: ${{ steps.get-unity-version.outputs.unity-version }}
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport'
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Test results
+          path: ${{ steps.tests.outputs.artifactsPath }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Coverage results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.coveragePath }}
