@@ -32,7 +32,7 @@ jobs:
     name: Get Unity Version
     runs-on: ubuntu-latest
     container:
-      image: docker:unityci/hub:latest
+      image: unityci/hub:latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
