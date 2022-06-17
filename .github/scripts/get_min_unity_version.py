@@ -10,10 +10,11 @@ with open(sys.argv[1]) as file:
 version = packageManifest["unity"]
 
 releases = subprocess.run(
-    "unity-hub editors --releases",
-    shell=True,
+    # "unity-hub editors --releases",
+    "/Applications/Unity\ Hub.app/Contents/MacOS/Unity\ Hub -- --headless editors --releases",
     capture_output=True,
     text=True,
+    shell=True,
 ).stdout
 
 for release in releases.splitlines():
