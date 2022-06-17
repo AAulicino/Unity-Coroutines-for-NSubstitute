@@ -68,7 +68,7 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
-          unityVersion: ${{ steps.get-unity-version.outputs.unity-version }}
+          unityVersion: ${{ needs.get-unity-version.outputs.unity-version }}
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport'
       - uses: actions/upload-artifact@v3
         if: always()
