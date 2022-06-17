@@ -2,7 +2,7 @@ using CoroutineSubstitute.Utils;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CoroutineSubstitute.UnitTests.Utils
+namespace CoroutineSubstitute.Tests.Utils
 {
     public class CoroutineExtensionsTests
     {
