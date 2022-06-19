@@ -17,15 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       package-name: ${{ steps.package-name.outputs.PACKAGE_NAME }}
-      artifact-name: ${{ steps.package-name.outputs.ARTIFACT_NAME }}
+      artifact-name: ${{ steps.artifact-name.outputs.ARTIFACT_NAME }}
     steps:
       - uses: actions/checkout@v3
       - run: npm pack
-      - uses: actions/upload-artifact@v3
-        with:
-          name: build-artifact
-          path: ./*.tgz
-          retention-days: 1
       - id: package-name
         name: Get Package Name
         run: >
@@ -34,6 +29,11 @@ jobs:
       - id: artifact-name
         name: Get Artifact Name
         run: echo "::set-output name=ARTIFACT_NAME::$(echo *.tgz)"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: ./*.tgz
+          retention-days: 1
 
   create-unity-project:
     name: Create Unity Project
