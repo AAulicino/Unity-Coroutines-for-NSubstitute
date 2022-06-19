@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       package-name: ${{ steps.package-name.outputs.PACKAGE_NAME }}
+      artifact-name: ${{ steps.package-name.outputs.ARTIFACT_NAME }}
     steps:
       - uses: actions/checkout@v3
       - run: npm pack
@@ -30,6 +31,9 @@ jobs:
         run: >
           echo "::set-output name=PACKAGE_NAME::
           $(cat package.json | grep -m 1 -oE '"name":\s*"([^"]*)' | awk -F '"' '{print $4}')"
+      - id: artifact-name
+        name: Get Artifact Name
+        run: echo "::set-output name=ARTIFACT_NAME::$(echo *.tgz)"
 
   create-unity-project:
     name: Create Unity Project
@@ -37,6 +41,7 @@ jobs:
     needs:
       - build
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
           name: build-artifact
@@ -44,12 +49,13 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
-      - run: echo *.tgz
-      - run: $SCRIPTS_DIR/create_unity_manifest.py ${{ needs.build.outputs.package-name }} $(echo *.tgz)
+      - run: $SCRIPTS_DIR/create_unity_manifest.py ${{ needs.build.outputs.package-name }} ${{ needs.build.outputs.artifact-name }}
       - uses: actions/upload-artifact@v3
         with:
           name: unity-project
-          path: .
+          path: |
+            Packages
+            ${{ needs.build.outputs.artifact-name }}
           retention-days: 1
 
   get-unity-version:
