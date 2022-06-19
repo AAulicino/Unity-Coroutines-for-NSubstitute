@@ -22,7 +22,6 @@ jobs:
       - run: npm pack
       - uses: actions/upload-artifact@v3
         with:
-          name: build-artifact
           path: ./*.tgz
           retention-days: 1
       - id: package-name
@@ -44,6 +43,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
+      - run: echo *.tgz
       - run: $SCRIPTS_DIR/create_unity_manifest.py ${{ needs.build.outputs.package-name }} $(echo *.tgz)
       - uses: actions/upload-artifact@v3
         with:
