@@ -74,6 +74,7 @@ jobs:
     name: Edit Mode Tests
     runs-on: ubuntu-latest
     needs:
+      - build
       - create-unity-project
       - get-unity-version
     steps:
@@ -93,7 +94,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
           unityVersion: ${{ needs.get-unity-version.outputs.unity-version }}
-          coverageOptions: "generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport;assemblyFilters:+<packages>"
+          coverageOptions: "generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport;assemblyFilters:+<project>;pathFilters:+**/PackageCache/${{ needs.build.outputs.package-name }}*/**"
       - uses: actions/upload-artifact@v3
         if: always()
         with:
