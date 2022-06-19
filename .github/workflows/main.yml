@@ -27,9 +27,9 @@ jobs:
         with:
           name: unity-project
           path: |
-            Assets
+            Assets.
             Packages
-            $PACKAGE_CONTENTS
+            ${{ env.PACKAGE_CONTENTS }}
           retention-days: 1
 
   get-unity-version:

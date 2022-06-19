@@ -22,5 +22,8 @@ manifest = {
     "testables": [packageManifest["name"]],
 }
 
+print("Generated Manifest:")
+print(manifest)
+
 with open("Packages/manifest.json", "w") as file:
     json.dump(manifest, file, ensure_ascii=False, indent=4)
