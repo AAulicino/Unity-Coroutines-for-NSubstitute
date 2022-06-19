@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: get-unity-version
-        run: echo "::set-output UNITY_VERSION=$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'))"
+        run: echo "::set-output name=UNITY_VERSION::$(unity-hub editors --releases | grep $(cat package.json | grep -oE '"unity":\s*"([^"]*)' | awk -F '"' '{print $4}'))"
 
   edit-mode-tests:
     name: Edit Mode Tests
