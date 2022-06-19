@@ -12,24 +12,43 @@ env:
   SCRIPTS_DIR: .github/scripts
 
 jobs:
+  build:
+    name: Build tgz
+    runs-on: ubuntu-latest
+    outputs:
+      package-name: ${{ steps.package-name.outputs.PACKAGE_NAME }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm pack
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: ./*.tgz
+          retention-days: 1
+      - id: package-name
+        name: Get Package Name
+        run: >
+          echo "::set-output name=PACKAGE_NAME::
+          $(cat package.json | grep -m 1 -oE '"name":\s*"([^"]*)' | awk -F '"' '{print $4}')"
+
   create-unity-project:
     name: Create Unity Project
     runs-on: ubuntu-latest
+    needs:
+      - build
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
       - run: mkdir $PACKAGE_CONTENTS
-      - run: mv -v $(git ls-tree --full-tree --name-only HEAD | grep -v '^\.') $PACKAGE_CONTENTS
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
-      - run: $SCRIPTS_DIR/create_unity_project.py $PACKAGE_CONTENTS/package.json
+      - run: $SCRIPTS_DIR/create_unity_manifest.py ${{ needs.build.outputs.package-name }} $(*.tgz)
       - uses: actions/upload-artifact@v3
         with:
           name: unity-project
-          path: |
-            Assets.
-            Packages
-            ${{ env.PACKAGE_CONTENTS }}
+          path: .
           retention-days: 1
 
   get-unity-version:
@@ -59,7 +78,6 @@ jobs:
           path: Library/
           key: unity-ci-cache
       - run: mkdir Assets
-      - run: echo ${{ needs.get-unity-version.outputs.unity-version }}
       - uses: game-ci/unity-test-runner@v2
         id: tests
         env:
