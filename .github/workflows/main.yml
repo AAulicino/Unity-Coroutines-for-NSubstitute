@@ -59,6 +59,7 @@ jobs:
           path: Library/
           key: unity-ci-cache
       - run: mkdir Assets
+      - run: echo ${{ needs.get-unity-version.outputs.unity-version }}
       - uses: game-ci/unity-test-runner@v2
         id: tests
         env:
