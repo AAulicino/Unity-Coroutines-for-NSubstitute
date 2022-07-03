@@ -48,14 +48,6 @@ namespace CoroutineSubstitute.Tests
         class MoveNextAndExpect : BaseICoroutineRunnerTestExtensionsTests
         {
             [Test]
-            public void Calls_MoveNextAndExpect_On_CoroutineRunner ()
-            {
-                ICoroutineRunnerTestExtensions.MoveNextAndExpect<int>(CoroutineRunner);
-
-                CoroutineRunner.Received().MoveNextAndExpect<int>();
-            }
-
-            [Test]
             public void Throws_When_Runner_Is_Not_CoroutineRunnerSubstitute ()
             {
                 Assert.Throws<ArgumentException>(() =>

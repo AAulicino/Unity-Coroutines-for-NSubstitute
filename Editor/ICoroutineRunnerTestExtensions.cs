@@ -1,4 +1,5 @@
 using System;
+using CoroutineSubstitute.Assertions;
 using CoroutineSubstitute.Substitutes;
 
 namespace CoroutineSubstitute
@@ -9,7 +10,10 @@ namespace CoroutineSubstitute
             => CastToSubstitute(runner).MoveNext();
 
         public static void MoveNextAndExpect<T> (this ICoroutineRunner runner)
-            => CastToSubstitute(runner).MoveNextAndExpect<T>();
+            => CoroutineRunnerAssertions.MoveNextAndExpect<T>(CastToSubstitute(runner));
+
+        public static void MoveNextAndExpect (this ICoroutineRunner runner, object value)
+            => CoroutineRunnerAssertions.MoveNextAndExpect(CastToSubstitute(runner), value);
 
         static CoroutineRunnerSubstitute CastToSubstitute (ICoroutineRunner runner)
         {
