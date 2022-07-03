@@ -1,6 +1,6 @@
 Unity Coroutines for NSubstitute
 ========
-
+[![Tests](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml/badge.svg)](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml)
 ## What is it?
 
 Testing and mocking Unity Coroutines can be tricky. This is an extension for
