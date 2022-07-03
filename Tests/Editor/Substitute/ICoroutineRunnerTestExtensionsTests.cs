@@ -1,4 +1,5 @@
 using System;
+using CoroutineSubstitute.Substitutes;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -13,7 +14,7 @@ namespace CoroutineSubstitute.Tests
             [SetUp]
             public void Setup ()
             {
-                CoroutineRunner = CoroutineSubstitute.Create();
+                CoroutineRunner = Substitute.For<CoroutineRunnerSubstitute>();
             }
         }
 
@@ -40,6 +41,19 @@ namespace CoroutineSubstitute.Tests
             {
                 Assert.Throws<ArgumentException>(() =>
                     ICoroutineRunnerTestExtensions.MoveNext(Substitute.For<ICoroutineRunner>())
+                );
+            }
+        }
+
+        class MoveNextAndExpect : BaseICoroutineRunnerTestExtensionsTests
+        {
+            [Test]
+            public void Throws_When_Runner_Is_Not_CoroutineRunnerSubstitute ()
+            {
+                Assert.Throws<ArgumentException>(() =>
+                    ICoroutineRunnerTestExtensions.MoveNextAndExpect<int>(
+                        Substitute.For<ICoroutineRunner>()
+                    )
                 );
             }
         }
