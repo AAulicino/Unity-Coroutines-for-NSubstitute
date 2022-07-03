@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CoroutineSubstitute.Substitutes.Call;
 using CoroutineSubstitute.Utils;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace CoroutineSubstitute.Substitutes
@@ -75,10 +76,30 @@ namespace CoroutineSubstitute.Substitutes
             return anySucceeded;
         }
 
+        public virtual void MoveNextAndExpect<T> ()
+        {
+            if (activeCoroutines.Count > 1)
+            {
+                throw new InvalidOperationException(
+                    "MoveNextAndExpect currently only supports a single Coroutine instance"
+                );
+            }
+
+            MoveNext();
+            object current = activeCoroutines.Single().Value.Current;
+
+            if (current is T)
+                return;
+
+            Assert.Fail($"Expected: {typeof(T).Name}\nBut was: {GetTypeName(current)}");
+        }
+
         public virtual void Reset ()
         {
             foreach (IStartCoroutineCall call in activeCoroutines.Values)
                 call.Reset();
         }
+
+        string GetTypeName (object obj) => obj?.GetType()?.Name ?? "null";
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace CoroutineSubstitute.SystemTests
 {
@@ -41,6 +43,15 @@ namespace CoroutineSubstitute.SystemTests
                     Assert.AreEqual(3, counter);
                 foreach (int counter in Counter2.Counters)
                     Assert.AreEqual(3, counter);
+            }
+
+            [Test]
+            public void MoveNextAndExpect_Throws_For_Multiple ()
+            {
+                Counter1.StartIEnumerators(5);
+                Counter2.StartIEnumerators(5);
+
+                Assert.Throws<InvalidOperationException>(Runner1.MoveNextAndExpect<StopIEnumerator>);
             }
         }
 

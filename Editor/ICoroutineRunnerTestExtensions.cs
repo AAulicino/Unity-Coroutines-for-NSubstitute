@@ -8,6 +8,9 @@ namespace CoroutineSubstitute
         public static bool MoveNext (this ICoroutineRunner runner)
             => CastToSubstitute(runner).MoveNext();
 
+        public static void MoveNextAndExpect<T> (this ICoroutineRunner runner)
+            => CastToSubstitute(runner).MoveNextAndExpect<T>();
+
         static CoroutineRunnerSubstitute CastToSubstitute (ICoroutineRunner runner)
         {
             if (runner is CoroutineRunnerSubstitute substitute)
