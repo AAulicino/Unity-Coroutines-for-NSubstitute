@@ -147,4 +147,6 @@ Runner.MoveNextAndExpect(new WaitForSeconds(1));
 
 Other samples can be found in the [Samples](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/tree/main/Tests/Editor/Samples) folder.
 
-While the documentation is not complete, you can also have a look at the [SystemTests](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/tree/main/Tests/Editor/SystemTests) folder as the tests found in there represent some real uses cases.
+---
+
+You can also have a look at the [SystemTests](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/tree/main/Tests/Editor/SystemTests) folder as the tests found in there represent some real uses cases.
