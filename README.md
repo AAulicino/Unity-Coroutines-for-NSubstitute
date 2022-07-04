@@ -54,38 +54,38 @@ ICoroutineRunner runner = Substitute.ForPartsOf<CoroutineRunnerSubstitute>();
 Let's use this simple counter class for testing:
 
 ```csharp
-    public class Counter
+public class Counter
+{
+    public int Current { get; private set; }
+
+    readonly ICoroutineRunner runner;
+    Coroutine coroutine;
+
+    public Counter (ICoroutineRunner runner)
     {
-        public int Current { get; private set; }
+        this.runner = runner;
+    }
 
-        readonly ICoroutineRunner runner;
-        Coroutine coroutine;
+    public void Start ()
+    {
+        coroutine = runner.StartCoroutine(CounterRoutine());
+    }
 
-        public Counter (ICoroutineRunner runner)
+    public void Stop ()
+    {
+        runner.StopCoroutine(coroutine);
+        coroutine = null;
+    }
+
+    IEnumerator CounterRoutine ()
+    {
+        while (true)
         {
-            this.runner = runner;
-        }
-
-        public void Start ()
-        {
-            coroutine = runner.StartCoroutine(CounterRoutine());
-        }
-
-        public void Stop ()
-        {
-            runner.StopCoroutine(coroutine);
-            coroutine = null;
-        }
-
-        IEnumerator CounterRoutine ()
-        {
-            while (true)
-            {
-                Current++;
-                yield return new WaitForSeconds(1);
-            }
+            Current++;
+            yield return new WaitForSeconds(1);
         }
     }
+}
 ```
 
 One thing you might've noticed is that instead of calling StartCoroutine on a MonoBehaviour,
@@ -94,14 +94,14 @@ we're calling it on the ICoroutineRunner interface. This allows us to mock the r
 The Counter can now be tested as follows:
 
 ```csharp
-    // Arrange
-    ICoroutineRunner runner = CoroutineSubstitute.Create();
-    Counter counter = new Counter(Runner);
-    // Act
-    Counter.Start();
-    Runner.MoveNext();
-    // Assert
-    Assert.AreEqual(1, Counter.Current);
+// Arrange
+ICoroutineRunner runner = CoroutineSubstitute.Create();
+Counter counter = new Counter(Runner);
+// Act
+Counter.Start();
+Runner.MoveNext();
+// Assert
+Assert.AreEqual(1, Counter.Current);
 ```
 
 Calling `Runner.MoveNext()` will simulate Unity's coroutine update loop.
