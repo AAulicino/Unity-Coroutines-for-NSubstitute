@@ -1,7 +1,7 @@
 Unity Coroutines for NSubstitute
 ========
 [![Tests](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml/badge.svg)](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml)
-
+[![openupm](https://img.shields.io/npm/v/com.aaulicino.unity-coroutines-for-nsubstitute?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.aaulicino.unity-coroutines-for-nsubstitute/)
 - [Unity Coroutines for NSubstitute](#unity-coroutines-for-nsubstitute)
   * [What is it?](#what-is-it)
   * [Installation](#installation)
@@ -18,16 +18,19 @@ Coroutines.
 
 ## Installation
 
-Unity does not allow specifying a git URL as a dependency of a custom UPM Package.
-There are plans to port this to OpenUPM, in the meantime a manual installation is required.
+### OpenUPM
+You can install this package using [OpenUPM](https://openupm.com/packages/com.aaulicino.unity-coroutines-for-nsubstitute). 
 
-If you don't have NSubstitute already from another source, add this to your **manifest.json**:
+### Manual Installation
+Unity does not allow specifying a git URL as a dependency of a custom UPM Package.
+
+If you don't have NSubstitute already from another source, add the following to your **manifest.json**:
 
 ```json
 "com.aaulicino.nsubstitute": "https://github.com/AAulicino/Unity3D-NSubstitute.git"
 ```
 
-To install this package, place this in your **manifest.json**:
+After ensuring you have NSubstitue installed, then place this in your **manifest.json**:
 
 ```json
 "com.aaulicino.unity-coroutines-for-nsubstitute": "https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute.git"
