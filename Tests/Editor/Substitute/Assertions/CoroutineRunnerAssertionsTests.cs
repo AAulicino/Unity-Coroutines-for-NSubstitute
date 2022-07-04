@@ -8,7 +8,7 @@ using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CoroutineSubstitute.Tests.Assertions
+namespace CoroutineSubstitute.UnitTests.Assertions
 {
     public class CoroutineAssertionsTests
     {

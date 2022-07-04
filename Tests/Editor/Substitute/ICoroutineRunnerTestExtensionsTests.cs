@@ -3,7 +3,7 @@ using CoroutineSubstitute.Substitutes;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace CoroutineSubstitute.Tests
+namespace CoroutineSubstitute.UnitTests
 {
     public class ICoroutineRunnerTestExtensionsTests
     {
