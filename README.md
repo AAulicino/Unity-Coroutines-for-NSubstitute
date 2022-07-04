@@ -1,7 +1,9 @@
 Unity Coroutines for NSubstitute
 ========
 [![Tests](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml/badge.svg)](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e75b97789e3bbc9bd273/maintainability)](https://codeclimate.com/github/AAulicino/Unity-Coroutines-for-NSubstitute/maintainability)
 [![openupm](https://img.shields.io/npm/v/com.aaulicino.unity-coroutines-for-nsubstitute?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.aaulicino.unity-coroutines-for-nsubstitute/)
+
 - [Unity Coroutines for NSubstitute](#unity-coroutines-for-nsubstitute)
   * [What is it?](#what-is-it)
   * [Installation](#installation)
