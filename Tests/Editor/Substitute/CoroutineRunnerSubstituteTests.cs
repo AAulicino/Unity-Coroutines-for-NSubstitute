@@ -7,7 +7,7 @@ using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CoroutineSubstitute.Tests
+namespace CoroutineSubstitute.UnitTests
 {
     public class CoroutineRunnerSubstituteTests
     {

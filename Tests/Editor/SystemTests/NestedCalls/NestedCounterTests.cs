@@ -1,6 +1,7 @@
 using System.Collections;
 using NSubstitute;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace CoroutineSubstitute.SystemTests
 {
@@ -65,6 +66,14 @@ namespace CoroutineSubstitute.SystemTests
 
                 Assert.AreEqual(3, Counter.Current);
             }
+
+            [Test]
+            public void MoveNextAndExpect ()
+            {
+                Counter.StartNestedIEnumerator();
+
+                Runner.MoveNextAndExpect<IEnumerator>();
+            }
         }
 
         class StartNestedCoroutine : BaseNestedCounterTests
@@ -112,6 +121,14 @@ namespace CoroutineSubstitute.SystemTests
                 Runner.MoveNext();
 
                 Assert.AreEqual(3, Counter.Current);
+            }
+
+            [Test]
+            public void MoveNextAndExpect ()
+            {
+                Counter.StartNestedIEnumerator();
+
+                Runner.MoveNextAndExpect<IEnumerator>();
             }
         }
 

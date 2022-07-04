@@ -6,7 +6,7 @@ using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CoroutineSubstitute.Tests.Substitutes.Call
+namespace CoroutineSubstitute.UnitTests.Substitutes.Call
 {
     public class StartCoroutineCallTests
     {
