@@ -1,6 +1,15 @@
 Unity Coroutines for NSubstitute
 ========
 [![Tests](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml/badge.svg)](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml)
+
+- [Unity Coroutines for NSubstitute](#unity-coroutines-for-nsubstitute)
+  * [What is it?](#what-is-it)
+  * [Installation](#installation)
+  * [Basic use](#basic-use)
+    + [Creating the mock](#creating-the-mock)
+    + [Using the mock](#using-the-mock)
+    + [Custom Assertions](#custom-assertions)
+
 ## What is it?
 
 Testing and mocking Unity Coroutines can be tricky. This is an extension for
@@ -73,7 +82,7 @@ Let's use this simple counter class for testing:
             while (true)
             {
                 Current++;
-                yield return null;
+                yield return new WaitForSeconds(1);
             }
         }
     }
@@ -116,4 +125,28 @@ public class GameSetup : MonoBehaviour, ICoroutineRunner
 }
 ```
 
+### Custom Assertions
+
+You can also assert the yielded values from the coroutine:
+
+```csharp
+ICoroutineRunner runner = CoroutineSubstitute.Create();
+Counter counter = new Counter(Runner);
+
+Runner.MoveNextAndExpect<WaitForSeconds>();
+```
+
+To assert the amount of seconds configured in the `WaitForSeconds` object:
+```csharp
+ICoroutineRunner runner = CoroutineSubstitute.Create();
+Counter counter = new Counter(Runner);
+
+Runner.MoveNextAndExpect(new WaitForSeconds(1));
+```
+
+
 Other samples can be found in the [Samples](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/tree/main/Tests/Editor/Samples) folder.
+
+---
+
+You can also have a look at the [SystemTests](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/tree/main/Tests/Editor/SystemTests) folder as the tests found in there represent some real uses cases.
