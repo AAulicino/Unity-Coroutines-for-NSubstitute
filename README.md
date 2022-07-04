@@ -1,7 +1,7 @@
 Unity Coroutines for NSubstitute
 ========
 [![Tests](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml/badge.svg)](https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute/actions/workflows/main.yml)
-
+[![openupm](https://img.shields.io/npm/v/com.aaulicino.unity-coroutines-for-nsubstitute?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.aaulicino.unity-coroutines-for-nsubstitute/)
 - [Unity Coroutines for NSubstitute](#unity-coroutines-for-nsubstitute)
   * [What is it?](#what-is-it)
   * [Installation](#installation)
@@ -18,16 +18,19 @@ Coroutines.
 
 ## Installation
 
-Unity does not allow specifying a git URL as a dependency of a custom UPM Package.
-There are plans to port this to OpenUPM, in the meantime a manual installation is required.
+### OpenUPM
+You can install this package using [OpenUPM](https://openupm.com/packages/com.aaulicino.unity-coroutines-for-nsubstitute). 
 
-If you don't have NSubstitute already from another source, add this to your **manifest.json**:
+### Manual Installation
+Unity does not allow specifying a git URL as a dependency of a custom UPM Package.
+
+If you don't have NSubstitute already from another source, add the following to your **manifest.json**:
 
 ```json
 "com.aaulicino.nsubstitute": "https://github.com/AAulicino/Unity3D-NSubstitute.git"
 ```
 
-To install this package, place this in your **manifest.json**:
+After ensuring you have NSubstitue installed, then place this in your **manifest.json**:
 
 ```json
 "com.aaulicino.unity-coroutines-for-nsubstitute": "https://github.com/AAulicino/Unity-Coroutines-for-NSubstitute.git"
@@ -54,38 +57,38 @@ ICoroutineRunner runner = Substitute.ForPartsOf<CoroutineRunnerSubstitute>();
 Let's use this simple counter class for testing:
 
 ```csharp
-    public class Counter
+public class Counter
+{
+    public int Current { get; private set; }
+
+    readonly ICoroutineRunner runner;
+    Coroutine coroutine;
+
+    public Counter (ICoroutineRunner runner)
     {
-        public int Current { get; private set; }
+        this.runner = runner;
+    }
 
-        readonly ICoroutineRunner runner;
-        Coroutine coroutine;
+    public void Start ()
+    {
+        coroutine = runner.StartCoroutine(CounterRoutine());
+    }
 
-        public Counter (ICoroutineRunner runner)
+    public void Stop ()
+    {
+        runner.StopCoroutine(coroutine);
+        coroutine = null;
+    }
+
+    IEnumerator CounterRoutine ()
+    {
+        while (true)
         {
-            this.runner = runner;
-        }
-
-        public void Start ()
-        {
-            coroutine = runner.StartCoroutine(CounterRoutine());
-        }
-
-        public void Stop ()
-        {
-            runner.StopCoroutine(coroutine);
-            coroutine = null;
-        }
-
-        IEnumerator CounterRoutine ()
-        {
-            while (true)
-            {
-                Current++;
-                yield return new WaitForSeconds(1);
-            }
+            Current++;
+            yield return new WaitForSeconds(1);
         }
     }
+}
 ```
 
 One thing you might've noticed is that instead of calling StartCoroutine on a MonoBehaviour,
@@ -94,14 +97,14 @@ we're calling it on the ICoroutineRunner interface. This allows us to mock the r
 The Counter can now be tested as follows:
 
 ```csharp
-    // Arrange
-    ICoroutineRunner runner = CoroutineSubstitute.Create();
-    Counter counter = new Counter(Runner);
-    // Act
-    Counter.Start();
-    Runner.MoveNext();
-    // Assert
-    Assert.AreEqual(1, Counter.Current);
+// Arrange
+ICoroutineRunner runner = CoroutineSubstitute.Create();
+Counter counter = new Counter(Runner);
+// Act
+Counter.Start();
+Runner.MoveNext();
+// Assert
+Assert.AreEqual(1, Counter.Current);
 ```
 
 Calling `Runner.MoveNext()` will simulate Unity's coroutine update loop.
