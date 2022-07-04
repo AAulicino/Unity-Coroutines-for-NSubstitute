@@ -94,7 +94,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: editmode
           unityVersion: ${{ needs.get-unity-version.outputs.unity-version }}
-          coverageOptions: "generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport;assemblyFilters:+<project>;pathFilters:+**/${{needs.build.outputs.package-name}}*/**"
+          coverageOptions: "generateAdditionalMetrics;generateHtmlReport;generateHtmlReportHistory;generateBadgeReport;assemblyFilters:+UnityCoroutineSubstitute.*"
       - uses: actions/upload-artifact@v3
         if: always()
         with:
